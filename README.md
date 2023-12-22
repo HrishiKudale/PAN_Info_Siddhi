@@ -48,13 +48,11 @@ Run main file
 
   
 ## Screenshots
-Query Image
+Web Deployment using Flask:
+![Output_screen](https://github.com/HrishiKudale/PAN_Info_Siddhi/assets/97778777/7618fc33-d691-447c-bb9d-a5d46fe550e3)
 
-![pic1](pan1.jpg)
 
-Result Image
-
-![pic2](result.JPG)
+Output Excel Sheet:
 
 
   
