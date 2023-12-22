@@ -57,5 +57,5 @@ Output Excel Sheet:
 
 
 Result Image:
-![Img_Output](https://github.com/HrishiKudale/PAN_Info_Siddhi/assets/97778777/d277fefe-4651-4d41-9785-8613c682f600)
+![result](https://github.com/HrishiKudale/PAN_Info_Siddhi/assets/97778777/adb7901e-bb1a-4f94-bad4-0a6aa88e5512)
   
