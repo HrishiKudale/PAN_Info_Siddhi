@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        h1 {
+            font-family: 'Times New Roman', Times, serif;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #upload-form {
+            text-align: center;
+        }
+
+        #output-container {
+            margin-top: 20px;
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            overflow-wrap: break-word;
+            opacity: 0; /* Initially invisible */
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #output-container.visible {
+            opacity: 1; /* Visible when text is loaded */
+        }
+
+        .loading {
+            display: inline-block;
+            margin: 20px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .extracted-field {
+            color: #007BFF; /* Blue color */
+        }
+        
+    </style>
+    
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+            document.getElementById('output-container').classList.add('loading');
+            document.getElementById('output-container').classList.remove('visible');
+            
+            // need to adjust the URL based on your Flask app routes
+            fetch('/', {
+                method: 'POST',
+                body: new FormData(document.getElementById('upload-form')),
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('output-container').classList.remove('loading');
+                document.getElementById('output-container').classList.add('visible');
+    
+                // Update the extracted text in the HTML
+                document.getElementById('extracted-data').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle errors here
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1 style="margin-bottom: 40px;">PAN INFO SIDDHI</h1>
+    <hr>
+    <form id="upload-form" action="/" method="post" enctype="multipart/form-data" style="margin-bottom: 20px;">
+        <input type="file" name="file" accept=".png, .jpg, .jpeg" required>
+        <input type="text" name="ground_truth" placeholder="Ground Truth (optional)">
+        <button type="submit">Upload & Extract</button>
+    </form>
+    <div class="container-item" id="image-container">
+        <img id="uploaded-image" src="{{ url_for('uploaded_file', filename=filename) }}" style="max-width: 100%; max-height: 300px;">
+    </div>
+    {% if data %}
+    <div id="output-container" class="visible">
+        <h2>Extracted Fields:</h2>
+        <ul>
+            <li><strong>Name:</strong> {{ data['Name'] }}</li>
+            <li><strong>Father's Name:</strong> {{ data['Father Name'] }}</li>
+            <li><strong>Date Of Birth:</strong> {{ data['Date of Birth'] }}</li>
+            <li><strong>PAN Number:</strong> {{ data['PAN'] }}</li>
+        </ul>
+        <p>Accuracy: {{ accuracy }}%</p>
+    </div>
+    {% endif %}
+</body>
+</html>
